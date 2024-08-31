@@ -1,4 +1,4 @@
-name: Run swag labs Tests
+name: Run OrangeHRM Tests
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest tests/test_login.py
+          pytest tests/test_login.py --html=report.html
 
 
       - name: Upload Test Results
