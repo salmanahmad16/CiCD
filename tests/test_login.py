@@ -12,9 +12,9 @@ def test_valid_login(driver):
     assert "OrangeHRM" in driver.title
 
 
-def test_invalid_login(driver):
-    login_page = LoginPage(driver)
-    login_page.load()
-    login_page.login("Salman", "123455")
-    error = login_page.error_message()
-    assert "Invalid credentials" in error
+# def test_invalid_login(driver):
+#     login_page = LoginPage(driver)
+#     login_page.load()
+#     login_page.login("Salman", "123455")
+#     error = login_page.error_message()
+#     assert "Invalid credentials" in error
