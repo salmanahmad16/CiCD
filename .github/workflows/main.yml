@@ -1,33 +1,42 @@
-name: Run OrangeHRM Tests
+name: CI Testing for Orange HRM
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
           python-version: '3.x'
-          
+
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
+       
 
+      - name: Create report directory
+        run: mkdir -p reports
 
-      - name: Run tests
+      - name: Run tests and generate HTML report
+        run: pytest tests/test_login.py --html=reports/report.html
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: reports/report.html
+
+      - name: Commit and Push Report
         run: |
-          pytest tests/test_login.py --html=report.html
-
-
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add reports/report.html
+          git commit -m "Update test report"
+          git push
